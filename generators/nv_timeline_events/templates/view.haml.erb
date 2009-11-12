@@ -1,0 +1,22 @@
+- source = timeline_event.source
+%li{ :class => 'Media ClearFix'}
+  %div{ :class => 'ColL'}
+    %a{ :href => polymorphic_path(source) }
+      != image_tag source.picture.url(:thumb)
+  %div{ :class => 'ColR'}
+    %p
+      %span{ :class => 'Date'}
+        != I18n.l timeline_event.created_at
+      %span{ :class => 'Action'}
+        %a{ :href => polymorphic_path(source) }
+          - if current_user == timeline_event.user
+            %b I
+          - else
+            %b!= timeline_event.user.name
+          made something with
+          %b!= "“#{source.title}”"
+      %span{ :class => 'Details'}
+        %b
+          Description :
+        != source.description
+

@@ -1,0 +1,52 @@
+= NvTimeline
+
+Easily build timelines
+
+== Install
+
+nv_timeline can be used as a plugin:
+
+  $ script/plugin install git://github.com/novelys/nv_timeline.git
+
+== Usage
+
+NvTimeline requires you to have a TimelineEvent model. 
+The simplest way is to use the generator.
+
+  $ script/generate nv_timeline_migration
+        exists  db/migrate
+        create  db/migrate/20090333222034_create_timeline_events.rb
+        create  app/models/timeline_event.rb
+
+add in your config/environment.rb :
+  config.load_paths += %W( #{RAILS_ROOT}/app/models/timeline_events )
+
+to add a new type of event :
+
+  $ script/generate nv_timeline_new_time_line_event 
+
+A User model is needed
+
+=== In your model :
+ * has_timeline :with => [:friends, :groups, :comments, :likes]
+   you include in the with list the list of collections that will be included in the standard timeline.
+   (by default, only self events will be used)
+ * this add an helper : timelines
+
+So you can write : current_user.timelines
+options are :
+ * :with => [:groups, :friends, :self]
+ * :except => [:groups]
+ * :only => [:self, :friends]
+
+=== To create an event
+ * for example, if you have a UserCreateGroup timeline event :
+    UserCreateGroup.create :user => current_user, :source => @group
+ * for event without sources (mood event, delete event), there is the body field
+    @timeline_event = UserStatusUpdate.new :user => current_user, :body => params[:status], :source => current_user
+    @timeline_event.save
+
+
+== License
+
+Copyright (c) 2009 Novelys, released under the MIT license
