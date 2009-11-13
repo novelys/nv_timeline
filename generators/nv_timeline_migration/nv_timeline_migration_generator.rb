@@ -3,7 +3,7 @@ class NvTimelineMigrationGenerator < Rails::Generator::Base
     record do |m|
       m.migration_template 'migration.rb', 'db/migrate', 
         :migration_file_name => 'create_timeline_events'
-      m.template 'model.rb', 'app/models/timeline_eventstimeline_event.rb'
+      m.template 'model.rb', 'app/models/timeline_event.rb'
     end
   end
 end
